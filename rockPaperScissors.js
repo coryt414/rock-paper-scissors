@@ -52,8 +52,7 @@ function getHumanChoice() {
 }
 
 // Step 3 - Declare variables to track score (humanScore & computerScore)
-let humanScore = 0;
-let computerScore = 0;
+
 
 
 // Step 4 - Create a function playRound to play a single round
@@ -64,32 +63,46 @@ Make humanChoice case agnostic (i.e. rock == ROCK == rOcK)
 Generate a console log to declare round winner
 Increment humanScore or computerScore based on result
 */
-function playRound(humanChoice,computerChoice) {
-    while (humanScore === 0 && computerScore === 0) {
+
+//playRound(humanChoice,computerChoice);
+//#console.log("Human score is: " + humanScore);
+//console.log("Computer score is: " + computerScore);
+
+
+// Step 5 - Write function playGame to play 5-round game
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+
+    function playRound(humanChoice,computerChoice) {
         computerChoice = getComputerChoice();
-        console.log(computerChoice)
         humanChoice = getHumanChoice();
         
         if (humanChoice === computerChoice) {
             humanChoice = null;
-            console.log("Match draw, both players made the same choice!");
+            console.log("Match draw, both players played: " + computerChoice + "!");
         }
-
+    
         else if(
             (humanChoice === "rock" && computerChoice === "scissors") ||
             (humanChoice === "paper" && computerChoice === "rock") ||
             (humanChoice === "scissors" && computerChoice === "paper")
             ){
                 humanScore += 1;
+                console.log("Human played: " + humanChoice + "  |  Computer played: " + computerChoice);
                 console.log("Human player wins!");
                 return humanScore
             }
             else {
                 computerScore += 1;
+                console.log("Human played: " + humanChoice + "  |  Computer played: " + computerChoice);
                 console.log("Computer player wins!");
                 return computerScore
             }
     }
+    while (humanScore < 5 && computerScore < 5) {
+        playRound(humanChoice,computerChoice);
+        console.log("Human score is: " + humanScore + "  |  Computer score is: " + computerScore);
+    }
 }
-playRound(humanChoice,computerChoice);
-// Step 5 - Write function playGame to play 5-round game
+playGame();
