@@ -70,17 +70,52 @@ Increment humanScore or computerScore based on result
 
 
 // Step 5 - Write function playGame to play 5-round game
-function playGame() {
     let humanScore = 0;
     let computerScore = 0;
+    let playerOptions = document.querySelector('#player-options');
+    playerOptions.addEventListener('click', (e) => {
+        let target = e.target;
 
-    function playRound(humanChoice,computerChoice) {
-        computerChoice = getComputerChoice();
-        humanChoice = getHumanChoice();
+        switch(target.id) {
+            case 'rock':
+                playRound("rock");
+                console.log(humanScore)
+                break;
+            case 'paper':
+                playRound("paper");
+                break;
+            case 'scissors':
+                playRound("scissors");
+                break;
+        }
+    });
+    const humanScoreDisplay = document.querySelector('#human-score');
+    const computerScoreDisplay = document.querySelector('#computer-score');
+    const humanChoiceDisplay = document.querySelector('#human-choice');
+    const computerChoiceDisplay = document.querySelector('#computer-choice');
+    const roundResultDisplay = document.querySelector('#round-result');
+    const winnerDisplay = document.querySelector("#winner")
+    humanScoreDisplay.textContent = "Human score: " + humanScore;
+    computerScoreDisplay.textContent = "Computer score: " +  computerScore;
+    humanChoiceDisplay.textContent = "Human played: ";
+    computerChoiceDisplay.textContent = "Computer played: ";
+    roundResultDisplay.textContent = "Result: "
+    console.log(humanScore)
+
+    function playRound(humanChoice) {
+        if(humanScore >= 5) {
+            winnerDisplay.textContent = "Human player was the first to 5 rounds!"
+        }
         
+        else if(computerScore >= 5) {
+            winnerDisplay.textContent = "Computer player was the first to 5 rounds :("
+        }
+        computerChoice = getComputerChoice();
+        humanChoiceDisplay.textContent = "Human played: " + humanChoice;
+        computerChoiceDisplay.textContent = "Computer played: " + computerChoice;
         if (humanChoice === computerChoice) {
             humanChoice = null;
-            console.log("Match draw, both players played: " + computerChoice + "!");
+            roundResultDisplay.textContent = "Result: Match draw, both players played: " + computerChoice + "!";
         }
     
         else if(
@@ -89,20 +124,19 @@ function playGame() {
             (humanChoice === "scissors" && computerChoice === "paper")
             ){
                 humanScore += 1;
-                console.log("Human played: " + humanChoice + "  |  Computer played: " + computerChoice);
-                console.log("Human player wins!");
-                return humanScore
+                roundResultDisplay.textContent = "Result: Human played: " + humanChoice + " Computer played: " + computerChoice + " Human player wins!";
+                humanScoreDisplay.textContent = "Human score: " + humanScore;
+                computerScoreDisplay.textContent = "Computer score: " +  computerScore;
+                return 
             }
             else {
                 computerScore += 1;
-                console.log("Human played: " + humanChoice + "  |  Computer played: " + computerChoice);
-                console.log("Computer player wins!");
-                return computerScore
+                roundResultDisplay.textContent = "Result: Human played: " + humanChoice + " Computer played: " + computerChoice + " Computer player wins!";
+                humanScoreDisplay.textContent = "Human score: " + humanScore;
+                computerScoreDisplay.textContent = "Computer score: " +  computerScore;
+                return 
             }
     }
-    while (humanScore < 5 && computerScore < 5) {
-        playRound(humanChoice,computerChoice);
-        console.log("Human score is: " + humanScore + "  |  Computer score is: " + computerScore);
-    }
-}
-playGame();
+
+
+//        console.log("Human score is: " + humanScore + "  |  Computer score is: " + computerScore);
