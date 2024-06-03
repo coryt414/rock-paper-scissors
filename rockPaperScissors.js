@@ -72,44 +72,60 @@ Increment humanScore or computerScore based on result
 // Step 5 - Write function playGame to play 5-round game
     let humanScore = 0;
     let computerScore = 0;
+    document.querySelector('#play-again').style.display = 'none';
     let playerOptions = document.querySelector('#player-options');
     playerOptions.addEventListener('click', (e) => {
         let target = e.target;
 
         switch(target.id) {
             case 'rock':
-                playRound("rock");
-                console.log(humanScore)
+                gameStatus = playRound("rock");
+                console.log(humanScore);
                 break;
+
             case 'paper':
-                playRound("paper");
+                gameStatus = playRound("paper");
+
                 break;
+
             case 'scissors':
-                playRound("scissors");
+                gameStatus = playRound("scissors");
                 break;
         }
+        let gameOver = document.querySelector('#play-again');
+        gameOver.addEventListener('click', () => {
+            humanScore = 0;
+            computerScore = 0;
+            humanScoreDisplay.textContent = "Human score: " + humanScore;
+            computerScoreDisplay.textContent = "Computer score: " +  computerScore;
+            document.querySelector('#player-options').style.display = 'block';
+        });
+
+        console.log(gameStatus)
+        if (gameStatus === true) {
+            gameOverMsg.textContent = "Game Over! Click the button below to replay."
+            document.querySelector('#play-again').style.display = 'block'
+            document.querySelector('#player-options').style.display = 'none';
+        }
     });
+
     const humanScoreDisplay = document.querySelector('#human-score');
     const computerScoreDisplay = document.querySelector('#computer-score');
     const humanChoiceDisplay = document.querySelector('#human-choice');
     const computerChoiceDisplay = document.querySelector('#computer-choice');
     const roundResultDisplay = document.querySelector('#round-result');
     const winnerDisplay = document.querySelector("#winner")
+    const gameOverMsg = document.querySelector('#game-over-msg')
     humanScoreDisplay.textContent = "Human score: " + humanScore;
     computerScoreDisplay.textContent = "Computer score: " +  computerScore;
     humanChoiceDisplay.textContent = "Human played: ";
     computerChoiceDisplay.textContent = "Computer played: ";
     roundResultDisplay.textContent = "Result: "
+
     console.log(humanScore)
 
     function playRound(humanChoice) {
-        if(humanScore >= 5) {
-            winnerDisplay.textContent = "Human player was the first to 5 rounds!"
-        }
-        
-        else if(computerScore >= 5) {
-            winnerDisplay.textContent = "Computer player was the first to 5 rounds :("
-        }
+        let gameStatus = false
         computerChoice = getComputerChoice();
         humanChoiceDisplay.textContent = "Human played: " + humanChoice;
         computerChoiceDisplay.textContent = "Computer played: " + computerChoice;
@@ -127,14 +143,32 @@ Increment humanScore or computerScore based on result
                 roundResultDisplay.textContent = "Result: Human played: " + humanChoice + " Computer played: " + computerChoice + " Human player wins!";
                 humanScoreDisplay.textContent = "Human score: " + humanScore;
                 computerScoreDisplay.textContent = "Computer score: " +  computerScore;
-                return 
+                if(humanScore >= 5) {
+                    winnerDisplay.textContent = "Human player was the first to 5 rounds!"
+                    gameStatus = true
+                }
+
+                else if(computerScore >= 5) {
+                    winnerDisplay.textContent = "Computer player was the first to 5 rounds :("
+                    gameStatus = true
+                }
+                return gameStatus
             }
             else {
                 computerScore += 1;
                 roundResultDisplay.textContent = "Result: Human played: " + humanChoice + " Computer played: " + computerChoice + " Computer player wins!";
                 humanScoreDisplay.textContent = "Human score: " + humanScore;
                 computerScoreDisplay.textContent = "Computer score: " +  computerScore;
-                return 
+                if(humanScore >= 5) {
+                    winnerDisplay.textContent = "Human player was the first to 5 rounds!"
+                    gameStatus = true
+                }
+
+                else if(computerScore >= 5) {
+                    winnerDisplay.textContent = "Computer player was the first to 5 rounds :("
+                    gameStatus = true
+                }
+                return gameStatus
             }
     }
 
